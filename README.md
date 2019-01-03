@@ -47,5 +47,34 @@ to the require section of your `composer.json` file.
 php artisan vendor:publish --provider="StevenLei\LaravelKeyValue\ServiceProvider"
 ```
 
-- 3. Modify the configuration file: `config/keyvalue.php`
+- 3. The configuration file: `config/keyvalue.php`, modify the configuration items in the `.env` file, for example:
 
+```
+KEY_VALUE_PREFIX=KV_
+KEY_VALUE_TTL=7200
+KEY_VALUE_USERNAME=username
+KEY_VALUE_MIDDLEWARE=web,auth
+```
+
+## Routes
+
+- Index page
+    - `/key-value/index`
+    - alias: `keyvalue.index`
+- Create page or store resource
+    -  `/key-value/create`
+    - alias: `keyvalue.create`
+- Update page or update resource
+    - `/key-value/update`
+    - alias: `keyvalue.update`
+- Delete resource(only soft delete)
+    - `/key-value/delete`
+    - alias: `keyvalue.delete`
+
+## Middleware
+
+Add middleware in the `.env` file, separated by commas, for example:
+
+```
+KEY_VALUE_MIDDLEWARE=web,auth
+```
