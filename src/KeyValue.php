@@ -36,7 +36,7 @@ class KeyValue
 
         $value = $this->getCacheValue($key);
         if (is_null($value)) {
-            $model = KeyValueModel::whereKvKey($key)->first();
+            $model = KeyValueModel::findKey($key);
 
             if ($model) {
                 $value = trim($model->kv_value);

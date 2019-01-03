@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|KeyValue whereKvKey($key)
  * @method static KeyValue search(array $params)
  * @method static KeyValue|null findId($id)
+ * @method static KeyValue|null findKey($key)
  * @mixin \Eloquent
  */
 class KeyValue extends Model
@@ -74,7 +75,7 @@ class KeyValue extends Model
     const STATUS_ACTIVE   = 'active';
     const STATUS_INACTIVE = 'inactive';
 
-    const FLAG_IS_DELETED = 1;
+    const FLAG_IS_DELETED     = 1;
     const FLAG_IS_NOT_DELETED = 0;
 
     public function delete()
@@ -110,7 +111,21 @@ class KeyValue extends Model
      */
     public function scopeFindId($query, $id)
     {
-        return $query->whereKey($id)->where('kv_deleted', '!=', KeyValue::FLAG_IS_DELETED)->first();
+        return $query->whereKey($id)->where('kv_deleted', self::FLAG_IS_NOT_DELETED)->first();
+    }
+
+    /**
+     * @param self   $query
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function scopeFindKey($query, $key)
+    {
+        return $query->whereKvKey($key)
+            ->where('kv_status', self::STATUS_ACTIVE)
+            ->where('kv_deleted', self::FLAG_IS_NOT_DELETED)
+            ->first();
     }
 
     /**
