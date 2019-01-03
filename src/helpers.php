@@ -48,13 +48,14 @@ if (!function_exists('kv_set')) {
 
 if (!function_exists('kv_get')) {
     /**
-     * @param $key
+     * @param string $key
+     * @param bool   $throwException
      *
      * @return mixed|null|string
      */
-    function kv_get($key)
+    function kv_get($key, $throwException = false)
     {
-        return app(KeyValue::class)->getValue($key);
+        return app(KeyValue::class)->getValue($key, $throwException);
     }
 }
 
@@ -71,7 +72,6 @@ if (!function_exists('kv_delete')) {
         return app(KeyValue::class)->deleteValue($id, $userId, $userName);
     }
 }
-
 
 if (!function_exists('kv_delete_cache')) {
     /**

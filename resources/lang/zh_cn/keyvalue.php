@@ -27,7 +27,7 @@ return [
     'btn.delete' => '删除',
     'btn.back'   => '返回',
 
-    'message.resource.not_found' => '资源不存在！',
+    'message.resource.not_found' => ':key的键值对不存在！',
     'message.value.type.error'   => '无法转换:key值为:type类型！',
     'message.copy.success'       => '复制成功！',
     'message.copy.fail'          => '复制失败！',

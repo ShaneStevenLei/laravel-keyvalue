@@ -26,7 +26,7 @@ return [
     'btn.delete' => 'Delete',
     'btn.back'   => 'Back',
 
-    'message.resource.not_found' => 'Not found this resource!',
+    'message.resource.not_found' => 'Not found this :key\'s value!',
     'message.value.type.error'   => 'Cannot convert :key\'s value to :type type!',
     'message.copy.success'       => 'Copied!',
     'message.copy.fail'          => 'Copy failed!',

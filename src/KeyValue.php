@@ -32,13 +32,11 @@ class KeyValue
      */
     public function getValue($key, $throwException = false)
     {
-        $value = null;
-
         $value = $this->getCacheValue($key);
         if (is_null($value)) {
             $model = KeyValueModel::findKey($key);
 
-            if ($model) {
+            if ($model->exists()) {
                 $value = trim($model->kv_value);
 
                 $this->setCacheValue($key, $value);
@@ -46,7 +44,7 @@ class KeyValue
         }
 
         if (is_null($value)) {
-            throw new KeyValueNotFoundException(__('keyvalue.message.resource.not_found'));
+            throw new KeyValueNotFoundException(__('keyvalue.message.resource.not_found', ['key' => $key]));
         }
 
         return $value;
@@ -94,7 +92,7 @@ class KeyValue
      */
     public function getCacheValue($key)
     {
-        return Cache::get($key);
+        return Cache::get(config('keyvalue.prefix') . $key);
     }
 
     /**
@@ -168,7 +166,7 @@ class KeyValue
     public function findModel($id)
     {
         if (($model = KeyValueModel::findId($id)) == null) {
-            throw new KeyValueNotFoundException(__('keyvalue.message.resource.not_found'));
+            throw new KeyValueNotFoundException(__('keyvalue.message.resource.not_found', ['key' => $id]));
         }
 
         return $model;
@@ -180,7 +178,7 @@ class KeyValue
      */
     public function setCacheValue($key, $value)
     {
-        Cache::put($key, $value, config('keyvalue.ttl'));
+        Cache::put(config('keyvalue.prefix') . $key, $value, config('keyvalue.ttl'));
     }
 
     /**
@@ -190,7 +188,7 @@ class KeyValue
      */
     public function deleteCacheValue($key)
     {
-        return Cache::forget($key);
+        return Cache::forget(config('keyvalue.prefix') . $key);
     }
 
     /**
@@ -199,6 +197,7 @@ class KeyValue
      */
     public function updateCacheValue($key, $value)
     {
-        $this->deleteCacheValue($key) && $this->setCacheValue($key, $value);
+        $this->deleteCacheValue($key);
+        $this->setCacheValue($key, $value);
     }
 }
