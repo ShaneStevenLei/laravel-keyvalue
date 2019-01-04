@@ -9,7 +9,7 @@
                    data-href="{{ route('keyvalue.delete', ['id' => $model->kv_id]) }}"
                    data-redirect-href="{{ route('keyvalue.index') }}"
                    data-post-data="{}" data-confirm="{{ __('keyvalue.message.delete.confirm') }}" data-method="post">
-                    {{ Form::button('删除', [
+                    {{ Form::button(__('keyvalue.btn.delete'), [
                         'class' => 'btn btn-sm btn-accent btn-flat m-r-10 btn-outline float-right'
                     ]) }}
                 </a>
@@ -42,10 +42,6 @@
                                           id='source'>{{ $model->kv_value }}</textarea>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
-                        <th>{{ __('keyvalue.attributes.kv_value') }}</th>
-                        <td>{{ $model->kv_value }}</td>
                     </tr>
                     <tr>
                         <th>{{ __('keyvalue.attributes.kv_memo') }}</th>
