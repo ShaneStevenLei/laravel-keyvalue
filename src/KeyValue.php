@@ -133,7 +133,7 @@ class KeyValue
             'kv_updated_user'    => $userName,
         ]));
 
-        if ($model->save()) {
+        if ($model->save() && $model->kv_status == KeyValueModel::STATUS_ACTIVE) {
             $this->setCacheValue($model->kv_key, $model->kv_value);
         }
 
@@ -155,7 +155,11 @@ class KeyValue
         ]));
 
         if ($model->save()) {
-            $this->updateCacheValue($model->kv_key, $model->kv_value);
+            if ($model->kv_status == KeyValueModel::STATUS_ACTIVE) {
+                $this->updateCacheValue($model->kv_key, $model->kv_value);
+            } else {
+                $this->deleteCacheValue($model->kv_key);
+            }
         }
     }
 
