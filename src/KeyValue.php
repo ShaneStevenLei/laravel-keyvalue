@@ -23,6 +23,11 @@ use StevenLei\LaravelKeyValue\Models\KeyValue as KeyValueModel;
  */
 class KeyValue
 {
+    const TYPE_STRING     = 'string';
+    const TYPE_JSON       = 'json';
+    const TYPE_ARRAY      = 'array';
+    const TYPE_COLLECTION = 'collection';
+
     /**
      * @param string $key
      * @param bool   $throwException
@@ -30,7 +35,7 @@ class KeyValue
      * @return mixed|null|string
      * @throws KeyValueNotFoundException
      */
-    public function getValue($key, $throwException = false)
+    public function getValue($key, $throwException = true)
     {
         $value = $this->getCacheValue($key);
         if (is_null($value)) {
@@ -54,10 +59,26 @@ class KeyValue
      * @param string $key
      * @param bool   $throwException
      *
+     * @return mixed|null|string
+     */
+    public function getJsonValue($key, $throwException = true)
+    {
+        $value = $this->getValue($key, $throwException);
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return json_decode((string)$value);
+    }
+
+    /**
+     * @param string $key
+     * @param bool   $throwException
+     *
      * @return array|mixed|null
      * @throws KeyValueErrorTypeException
      */
-    public function getArrayValue($key, $throwException = false)
+    public function getArrayValue($key, $throwException = true)
     {
         $value      = $this->getValue($key, $throwException);
         $arrayValue = json_decode($value, true);
@@ -65,7 +86,7 @@ class KeyValue
         if ($throwException === true && !is_array($arrayValue)) {
             throw new KeyValueErrorTypeException(__('keyvalue.message.value.type.error', [
                 'key'  => $key,
-                'type' => 'array',
+                'type' => self::TYPE_ARRAY,
             ]));
         }
 
@@ -78,7 +99,7 @@ class KeyValue
      *
      * @return \Illuminate\Support\Collection|null
      */
-    public function getCollectionValue($key, $throwException = false)
+    public function getCollectionValue($key, $throwException = true)
     {
         $arrayValue = $this->getArrayValue($key, $throwException);
 

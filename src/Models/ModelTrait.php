@@ -53,7 +53,7 @@ trait ModelTrait
             return $query;
         }
 
-        $query->where($column, 'like', $fuzzyMatch ? $value . '%' : $value);
+        $query->where($column, 'like', $fuzzyMatch ? '%' . $value . '%' : $value);
 
         return $query;
     }

@@ -97,8 +97,8 @@ class KeyValue extends Model
         $this->fill($params);
 
         return $query->where('kv_deleted', '!=', self::FLAG_IS_DELETED)
-            ->filterLike('kv_key', $this->kv_key)
-            ->filterLike('kv_value', $this->kv_value)
+            ->filterLike('kv_key', $this->kv_key, true)
+            ->filterLike('kv_value', $this->kv_value, true)
             ->filterWhere('kv_status', $this->kv_status)
             ->paginate(20);
     }

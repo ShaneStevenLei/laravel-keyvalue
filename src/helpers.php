@@ -8,6 +8,7 @@
  * with this source code in the file LICENSE.
  */
 
+use StevenLei\LaravelKeyValue\Exceptions\KeyValueErrorTypeException;
 use StevenLei\LaravelKeyValue\KeyValue;
 
 if (!function_exists('kv')) {
@@ -49,13 +50,29 @@ if (!function_exists('kv_set')) {
 if (!function_exists('kv_get')) {
     /**
      * @param string $key
+     * @param string $type
      * @param bool   $throwException
      *
-     * @return mixed|null|string
+     * @return array|\Illuminate\Support\Collection|mixed|null|string
+     * @throws \StevenLei\LaravelKeyValue\Exceptions\KeyValueErrorTypeException
      */
-    function kv_get($key, $throwException = false)
+    function kv_get($key, $type = KeyValue::TYPE_STRING, $throwException = true)
     {
-        return app(KeyValue::class)->getValue($key, $throwException);
+        switch ($type) {
+            case KeyValue::TYPE_STRING:
+                return app(KeyValue::class)->getValue($key, $throwException);
+            case KeyValue::TYPE_JSON:
+                return app(KeyValue::class)->getJsonValue($key, $throwException);
+            case KeyValue::TYPE_ARRAY:
+                return app(KeyValue::class)->getArrayValue($key, $throwException);
+            case KeyValue::TYPE_COLLECTION:
+                return app(KeyValue::class)->getCollectionValue($key, $throwException);
+            default:
+                throw new KeyValueErrorTypeException(__('keyvalue.message.value.type.error', [
+                    'key'  => $key,
+                    'type' => $type,
+                ]));
+        }
     }
 }
 
