@@ -56,6 +56,25 @@ KEY_VALUE_USERNAME=username
 KEY_VALUE_MIDDLEWARE=web,auth
 ```
 
+- 4. How to get the key's value in the program?
+
+```php
+# Get the string value
+StevenLei\LaravelKeyValue\Facade::getValue($key, $throwException = true);
+# Get the json object
+StevenLei\LaravelKeyValue\Facade::getJsonValue($key, $throwException = true);
+# Get the array
+StevenLei\LaravelKeyValue\Facade::getArrayValue($key, $throwException = true);
+# Get the collection
+StevenLei\LaravelKeyValue\Facade::getCollectionValue($key, $throwException = true);
+```
+
+or use the helper function
+
+```php
+kv_get($key, $type = KeyValue::TYPE_STRING, $throwException = true);
+```
+
 ## Routes
 
 - Index page
