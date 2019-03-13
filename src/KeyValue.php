@@ -203,7 +203,7 @@ class KeyValue
      */
     public function setCacheValue($key, $value)
     {
-        Cache::put(config('keyvalue.prefix') . $key, $value, config('keyvalue.ttl'));
+        Cache::put(config('keyvalue.prefix') . $key, $value, intdiv(config('keyvalue.ttl'), 60));
     }
 
     /**
